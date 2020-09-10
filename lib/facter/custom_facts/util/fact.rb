@@ -117,7 +117,13 @@ module Facter
         end
 
         searching do
+          puts "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& resolutions"
+          p @resolves
+
           suitable_resolutions = sort_by_weight(find_suitable_resolutions(@resolves))
+
+          puts "########################################## resolutions"
+          p suitable_resolutions
 
           Facter::Framework::Benchmarking::Timer.measure(@name) do
             @value = find_first_real_value(suitable_resolutions)

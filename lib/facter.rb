@@ -42,6 +42,10 @@ module Facter
     #
     # @api public
     def add(name, options = {}, &block)
+
+      # if name == :apt_has_dist_updates
+      #   puts "QQQQQQQQQQQQQQQQ #{caller}"
+      # end
       options[:fact_type] = :custom
       LegacyFacter.add(name, options, &block)
       LegacyFacter.collection.invalidate_custom_facts
@@ -118,6 +122,12 @@ module Facter
       user_query = user_query.to_s
       resolve_fact(user_query)
 
+      if user_query.to_s == 'osfamily'
+        puts "*******************************caller**********************************"
+        puts caller
+        p @already_searched
+      end
+
       @already_searched[user_query]
     end
 
@@ -143,7 +153,11 @@ module Facter
     #
     # @api public
     def search(*dirs)
-      Options[:custom_dir] += dirs
+      res = (Options[:custom_dir] += dirs)
+      puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ search path is:"
+      p Options[:custom_dir]
+      puts caller
+      res
     end
 
     # Registers directories to be searched for external facts.
@@ -274,6 +288,7 @@ module Facter
     end
 
     def add_fact_to_searched_facts(user_query, value)
+      puts "USER QUERY = #{user_query}"
       @already_searched[user_query] ||= ResolvedFact.new(user_query, value)
       @already_searched[user_query].value = value
     end
@@ -283,8 +298,10 @@ module Facter
     #
     # @return [ResolvedFact]
     def resolve_fact(user_query)
+      Options[:show_legacy] = true
       user_query = user_query.to_s
       resolved_facts = Facter::FactManager.instance.resolve_facts([user_query])
+      Options[:show_legacy] = false
       SessionCache.invalidate_all_caches
       # we must make a distinction between custom facts that return nil and nil facts
       # Nil facts should not be packaged as ResolvedFacts! (add_fact_to_searched_facts packages facts)
@@ -376,3 +393,4 @@ module Facter
     prepend ApiDebugger if ENV['API_DEBUG']
   end
 end
+# vim: syntax=ruby

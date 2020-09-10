@@ -13,6 +13,20 @@ module Facter
       @filter_tokens = filter_tokens
     end
 
+    def value
+      # if name == 'osfamily'
+      #   puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      #   puts caller
+      #   puts "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+      # end
+
+      @value
+    end
+
+    def value=(val)
+      @value = val
+    end
+
     def legacy?
       type == :legacy
     end
