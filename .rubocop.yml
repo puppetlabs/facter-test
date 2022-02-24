@@ -11,8 +11,14 @@ require:
   - rubocop-performance
   - rubocop-rspec
 
+Layout/EmptyLinesAroundMethodBody:
+  Enabled: false
+
 Layout/LineLength:
   Max: 120
+
+Layout/TrailingEmptyLines:
+  Enabled: false
 
 Lint/RaiseException:
   Enabled: true
@@ -175,3 +181,7 @@ Style/HashTransformKeys:
 
 Style/HashTransformValues:
   Enabled: false  # not implemted in ruby 2.3
+
+Style/StringLiterals:
+  Enabled: false
+
